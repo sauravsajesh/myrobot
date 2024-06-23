@@ -1,0 +1,5 @@
+<launch>
+    <node name="imu_slope_monitor" pkg="imu_monitor" type="imu_slope_monitor.py" output="screen">
+        <param name="slope_threshold" value="0.5"/>
+    </node>
+</launch>

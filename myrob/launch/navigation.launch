@@ -1,0 +1,29 @@
+<launch>
+
+	<arg name="custom_amcl_launch_file" default="$(find navigation_stack)/launch/amcl.launch"/>
+
+
+	<include file="$(find myrobot_description)/launch/house.launch"/>
+
+	<include file="$(arg custom_amcl_launch_file)">
+		<arg name="base_link_name" value="base_link"/>
+		<arg name="map_file" value="$(find myrobot_description)/../maps/aws_house/map.yaml"/>
+	</include>
+
+	<include file="$(find navigation_stack)/launch/includes/move_base.launch.xml">
+		<arg name="base_frame_id" value="base_link"/>
+		<arg name="odom_topic" value="odom" />
+		<arg name="odom_frame_id" value="odom"/>
+		<arg name="cmd_vel_topic" value="cmd_vel" />
+		<arg name="custom_param_file" value="$(find navigation_stack)/param/r200_costmap_params.yaml"/>
+	</include>
+
+	<node name="rviz_navigation" pkg="rviz" type="rviz" respawn="false"
+			args="-d $(find navigation_stack)/rviz/navigation.rviz"/>
+    <!-- launch/main_navigation.launch -->
+    <!-- Other nodes and configurations -->
+
+    <!-- Launch motion detection -->
+    <include file="$(find object_detection)/launch/motion.launch"/>
+	<include file="$(find imu_monitor)/launch/imu_slope_monitor.launch"/>
+</launch>
